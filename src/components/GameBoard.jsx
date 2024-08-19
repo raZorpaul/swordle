@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import './styles/GameBoard.css';
 import getFeedback from "../utils/wordUtils"; // Assuming getFeedback function is correctly imported
 import Modal from "./Modal";
@@ -11,34 +11,31 @@ export default function GameBoard() {
     const [currentRow, setCurrentRow] = useState(0);
     const [previousRows, setPreviousRows] = useState([]);
     const [usedWords, setUsedWords] = useState([]);
-    const [challengeWord, setChallengeWord] = useState('');
+    // const [challengeWord, setChallengeWord] = useState('');
     const [feedbackRows, setFeedbackRows] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
 
-    const swahili_words = ["mboga", "chafu", "panda", "nyota", "kitabu"];
+    // const swahili_words = ["mboga", "chafu", "panda", "nyota", "kitabu"];
 
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
-
-    const selectChallengeWord = () => {
+    const swahili_words = ["mboga", "chafu", "panda", "nyota", "kitabu"];
+    const [challengeWord] = useState(() => {
         let availableWords = swahili_words.filter(word => !usedWords.includes(word));
-            const randomIndex = Math.floor(Math.random() * availableWords.length);
-            const a = availableWords[randomIndex]
-            console.log(a)
-            setChallengeWord(a)
-    }; 
-
+        const randomIndex = Math.floor(Math.random() * availableWords.length);
+        return availableWords[randomIndex];
+    });
 
     useEffect(() => {
-        selectChallengeWord();
-        
+        console.log(challengeWord);
+
         return () => {
             console.log("Cleanup function"); // Optional: Cleanup function example
         };
-    }, []); // Ensure the dependency array is empty if you want it to run only on mount
+    }, []); // Empty dependency array ensures it only logs once on mount
     
 
     // const handleKeyDown = (event) => {
@@ -182,13 +179,13 @@ export default function GameBoard() {
                                 cellClass += ' incorrect';
                             }
                         }  else if (row === currentRow) {
-                            letter = word[col] || '';
+                            letter = (word[col] || '').toUpperCase();
                         }
 
                         
                         return (
                             <div key={`${row}-${col}`} className={cellClass}>
-                                {letter}
+                                {letter.toUpperCase()}
                             </div>
                         );
                     });
