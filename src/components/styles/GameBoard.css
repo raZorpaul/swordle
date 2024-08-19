@@ -1,3 +1,10 @@
+
+:root {
+    --correct: #538d4e;
+    --incorrect: #3a3a3c;
+    --present : #b59f3b;
+}
+
 .gameboard {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -18,6 +25,10 @@
     font-size: 40px;
     font-weight: 600;
 }
+
+.cell.correct { background-color: var(--correct); }
+.cell.present { background-color: var(--present); }
+.cell.incorrect { background-color:var(--incorrect); }
 
 .flip {
     transform: rotateX(360deg);
