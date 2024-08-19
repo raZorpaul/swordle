@@ -52,6 +52,11 @@ export default function GameBoard() {
         }
     };
 
+    const specificFunction = () => {
+        const feedback = feedbackRows[row][col]
+        console.log(feedback)
+    }
+
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
@@ -64,18 +69,29 @@ export default function GameBoard() {
             <p>KEYS PRESSED ARE: {word} </p>
             <div className="gameboard">
                 {
-                    Array(rows).fill(0).map((_, row) => (
-                        Array(colms).fill(0).map((_, col) => {
-                            const index = row * colms + col;
-                            return (
-                                <div key={`${row}-${col}`} className={'cell'}>
-                                    {row < currentRow ? (
-                                        feedbackRows[row] ? feedbackRows[row][col] : ''
-                                    ) : ''}
-                                </div>
-                            );
-                        })
-                    ))
+                  Array(rows).fill(0).map((_, row) => (
+                    Array(colms).fill(0).map((_, col) => {
+                        const index = row * colms + col;
+                        let cellClass = 'cell';
+                        
+                        if (row < currentRow && feedbackRows[row]) {
+                            const feedback = feedbackRows[row][col];
+                            if (feedback === '🟩') {
+                                cellClass += ' correct';
+                            } else if (feedback === '🟨') {
+                                cellClass += ' present';
+                            } else {
+                                cellClass += ' incorrect';
+                            }
+                        }
+                
+                        return (
+                            <div key={`${row}-${col}`} className={cellClass}>
+                                {/* {row < currentRow && feedbackRows[row] ? feedbackRows[row][col] : ''} */}
+                            </div>
+                        );
+                    })
+                ))
                 }
             </div>
         </div>
