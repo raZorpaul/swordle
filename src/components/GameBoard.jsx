@@ -175,6 +175,7 @@ export default function GameBoard() {
                                 cellClass += ' correct';
                             } else if (feedback === '🟨') {
                                 cellClass += ' present';
+                                // cellClass += ' flip
                             } else  {
                                 cellClass += ' incorrect';
                             }
