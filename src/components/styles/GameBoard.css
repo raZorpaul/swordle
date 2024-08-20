@@ -1,4 +1,3 @@
-
 :root {
     --correct: #538d4e;
     --incorrect: #3a3a3c;
@@ -16,7 +15,7 @@
 .cell {
     min-width: 40px;
     min-height: 40px;
-    border: 1px solid grey;
+    border: 2px solid #3A3A3C;
     padding: 10px; /* Add a fixed padding to maintain a gap between cells */
     text-align: center;
     display: flex;
@@ -24,13 +23,30 @@
     align-items: center;
     font-size: 40px;
     font-weight: 600;
+    transition: background-color 0.3s ease-in-out;
 }
 
-.cell.correct { background-color: var(--correct); }
-.cell.present { background-color: var(--present); }
-.cell.incorrect { background-color:var(--incorrect); }
+.cell.correct { background-color: var(--correct); border-color: var(--correct); }
+.cell.present { background-color: var(--present); border-color: var(--present); }
+.cell.incorrect { background-color:var(--incorrect); border-color: var(--incorrect); }
 
 .flip {
     transform: rotateX(360deg);
     transition: transform 2s;
+}
+
+@keyframes flip {
+    0% {
+        transform: rotateX(0deg);
+    }
+    50% {
+        transform: rotateX(90deg);
+    }
+    100% {
+        transform: rotateX(0deg);
+    }
+}
+
+.animate-flip {
+    animation: flip 0.4s ease-in-out;
 }
