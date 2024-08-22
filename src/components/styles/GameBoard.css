@@ -3,7 +3,14 @@
     --incorrect: #3a3a3c;
     --present : #b59f3b;
 }
-
+.layout {
+    display: flex;
+    flex-direction: column;
+}
+.keyboard-section {
+    margin-top: 450px;
+    margin-left: -85px;
+}
 .gameboard {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
