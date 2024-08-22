@@ -12,14 +12,14 @@ export default function Modal({ isOpen, onClose, type, message }) {
     switch (type) {
         case 'howToPlay':
             content = (
-                <>
-                    <h2 className="modal-title">How To Play</h2>
-                    <p className="modal-subtitle">Guess the Wordle in 6 tries.</p>
+                <div className="modal-howtoPlay">
+                    <h2 className="modal-title">Jinsi Ya Kucheza</h2>
+                    <p className="modal-subtitle">Nadhani Neno katika majaribio 6.</p>
                     <ul className="modal-list">
-                        <li>Each guess must be a valid 5-letter word.</li>
-                        <li>The color of the tiles will change to show how close your guess was to the word.</li>
+                        <li>Kila nadhani lazima iwe neno halali la herufi 5.</li>
+                        <li>Rangi ya vigae itabadilika ili kuonyesha jinsi nadhani yako ilivyokuwa karibu na neno.</li>
                     </ul>
-                </>
+                </div>
             );
             break;
         case 'gameOver':

@@ -25,7 +25,8 @@ function App() {
         <Modal
           isOpen={true}
           onClose={handleCloseHelpModal}
-          message="Here are the game rules and instructions..."
+          // message="Here are the game rules and instructions..."
+          type="howToPlay"
         />
       )}
     </div>
