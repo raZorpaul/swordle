@@ -30,9 +30,23 @@
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
+    transition: background-color 0.3s ease;
 }
 
 .wide-key {
     width: 65px;
     font-size: 14px;
+}
+
+/* New styles for key feedback */
+.key-correct {
+    background-color: #538d4e;
+}
+
+.key-present {
+    background-color: #b59f3b;
+}
+
+.key-absent {
+    background-color: #3a3a3c;
 }

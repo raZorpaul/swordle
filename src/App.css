@@ -1,7 +1,19 @@
 .app {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 50px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #121213;
+  /* border: 1px white solid; */
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
 }

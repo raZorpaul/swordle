@@ -12,7 +12,7 @@ export default function Modal({ isOpen, onClose, message }) {
                 <div className="modal-icon">
                     <img src={congratsImage} alt="Congratulations" width="56" height="56" />
                 </div>
-                <h2 className="modal-title">Congratulations!</h2>
+                {/* <h2 className="modal-title">Congratulations!</h2> */}
                 <p className="modal-message">{message}</p>
             </div>
         </div>

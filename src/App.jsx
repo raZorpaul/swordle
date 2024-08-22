@@ -1,19 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import GameBoard from './components/GameBoard'
-// import Keyboard from "./components/Keyboard.jsx";
+import NavBar from './components/Navbar'
+import Modal from './components/Modal'
 
 function App() {
-  // const [count, setCount] = useState(0)
+  const [showHelpModal, setShowHelpModal] = useState(false)
+
+  const handleHelpClick = () => {
+    setShowHelpModal(true)
+  }
+
+  const handleCloseHelpModal = () => {
+    setShowHelpModal(false)
+  }
 
   return (
     <div className="app">
+      <NavBar onHelpClick={handleHelpClick} />
       <div className="mainContent">
         <GameBoard />
       </div>
-        {/*<Keyboard/>*/}
+      {showHelpModal && (
+        <Modal
+          isOpen={true}
+          onClose={handleCloseHelpModal}
+          message="Here are the game rules and instructions..."
+        />
+      )}
     </div>
   )
 }

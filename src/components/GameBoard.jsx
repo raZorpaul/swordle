@@ -16,32 +16,35 @@ const wordList = [
 ];
 
 export default function GameBoard() {
-    const { guesses, handleSubmit: submitFeedback, getFeedback } = Feedback();
+    const { getFeedback } = Feedback();
     const [challengeWord, setChallengeWord] = useState(() => {
         return wordList[Math.floor(Math.random() * wordList.length)];
     });
     const [word, setWord] = useState([]);
     const [currentRow, setCurrentRow] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [guesses, setGuesses] = useState([]);
+    const [keyFeedback, setKeyFeedback] = useState({});
     const [animatingCells, setAnimatingCells] = useState([]);
     const [pendingFeedback, setPendingFeedback] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [lastGuess, setLastGuess] = useState(null);
 
-    const handleOpenModal = () => setIsModalOpen(true);
-    const handleCloseModal = () => setIsModalOpen(false);
-
-    const handleSubmit = useCallback((challengeWord, userGuess) => {
-        // ... (your existing handleSubmit logic)
-
-        if (userGuess === challengeWord || currentRow === rows - 1) {
-            setGameOver(true);
-            setIsModalOpen(true);
-            setModalMessage(userGuess === challengeWord ? "You've guessed the word correctly!" : "Game Over. The word was " + challengeWord);
+    const checkGuess = useCallback((guess) => {
+        const newKeyFeedback = { ...keyFeedback };
+        for (let i = 0; i < guess.length; i++) {
+            const letter = guess[i].toUpperCase();
+            if (challengeWord[i] === letter) {
+                newKeyFeedback[letter] = 'correct';
+            } else if (challengeWord.includes(letter) && newKeyFeedback[letter] !== 'correct') {
+                newKeyFeedback[letter] = 'present';
+            } else if (!challengeWord.includes(letter)) {
+                newKeyFeedback[letter] = 'absent';
+            }
         }
-        submitFeedback(challengeWord, userGuess);
-    }, [submitFeedback, currentRow /* ... other dependencies ... */]);
+        setKeyFeedback(newKeyFeedback);
+    }, [challengeWord, keyFeedback]);
 
     const animateRow = useCallback((feedback) => {
         const animationDuration = 350; // ms
@@ -55,7 +58,17 @@ export default function GameBoard() {
                     setPendingFeedback(null);
                     setCurrentRow(prevRow => prevRow + 1);
                     setWord([]);
-                    setLastGuess(feedback);
+
+                    // Check if the game is over after animation
+                    const isRowCorrect = feedback.every(f => f === '🟩');
+                    if (isRowCorrect || currentRow === rows - 1) {
+                        setGameOver(true);
+                        setIsModalOpen(true);
+                        setModalMessage(isRowCorrect 
+                            ? "You've guessed the word correctly!" 
+                            : `Game Over. The word was ${challengeWord}`
+                        );
+                    }
                 }, animationDuration / 2);
                 return;
             }
@@ -72,21 +85,15 @@ export default function GameBoard() {
         };
 
         animateNextCol(0);
-    }, [colms]);
+    }, [colms, currentRow, rows, challengeWord]);
 
-    useEffect(() => {
-        if (lastGuess) {
-            const isRowCorrect = lastGuess.every(feedbackItem => feedbackItem === '🟩');
-            if (isRowCorrect || currentRow === rows) {
-                const modalDelay = 4500; // 1.5 seconds after animation completes
-                setTimeout(() => {
-                    setGameOver(true);
-                    setIsModalOpen(true);
-                    setModalMessage(isRowCorrect ? "You've guessed the word correctly!" : "Game Over. The word was " + challengeWord);
-                }, modalDelay);
-            }
-        }
-    }, [lastGuess, currentRow, rows, challengeWord]);
+    const handleSubmit = useCallback((challengeWord, userGuess) => {
+        const feedback = getFeedback(challengeWord, userGuess);
+        
+        setGuesses(prevGuesses => [...prevGuesses, { word: userGuess, feedback }]);
+        checkGuess(userGuess);
+        animateRow(feedback);
+    }, [getFeedback, checkGuess, animateRow]);
 
     const handleKeyPress = useCallback((key) => {
         if (gameOver || animatingCells.length > 0) return; // Ignore input if game is over or during animation
@@ -97,11 +104,9 @@ export default function GameBoard() {
             setWord(prevWords => prevWords.slice(0, -1));
         } else if (key === 'ENTER' && word.length === 5) {
             const userGuess = word.join('');
-            const feedback = getFeedback(challengeWord, userGuess);
-            animateRow(feedback);
             handleSubmit(challengeWord, userGuess);
         }
-    }, [word, handleSubmit, animateRow, animatingCells.length, challengeWord, getFeedback, gameOver]);
+    }, [word, handleSubmit, animatingCells.length, challengeWord, getFeedback, gameOver]);
 
     const handleKeyDown = useCallback((event) => {
         if (gameOver) return; // Ignore keyboard input if game is over
@@ -115,6 +120,10 @@ export default function GameBoard() {
             handleKeyPress(key);
         }
     }, [handleKeyPress, gameOver]);
+
+    const handleCloseModal = useCallback(() => {
+        setIsModalOpen(false);
+    }, []);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -136,22 +145,22 @@ export default function GameBoard() {
                         let letter = '';
 
                         if (row < currentRow && guesses[row]) {
-                            const { word: guessWord, feedback } = guesses[row];
-                            letter = guessWord[col];
-                            cellClass += getFeedbackClass(feedback[col]);
+                            letter = guesses[row].word[col];
+                            cellClass += ` ${getFeedbackClass(guesses[row].feedback[col])}`;
                         } else if (row === currentRow) {
                             letter = (word[col] || '').toUpperCase();
-                            if (animatingCells.includes(col)) {
+
+                            if(animatingCells.includes(col)) {
                                 cellClass += ' animate-flip';
                             }
-                            if (pendingFeedback && pendingFeedback[col]) {
-                                cellClass += getFeedbackClass(pendingFeedback[col]);
+                            if (animatingCells.includes(col) && pendingFeedback) {
+                                cellClass += ` ${getFeedbackClass(pendingFeedback[col])} animate-flip`;
                             }
                         }
 
                         return (
                             <div key={`${row}-${col}`} className={cellClass}>
-                                {letter.toUpperCase()}
+                                {letter}
                             </div>
                         );
                     });
@@ -162,7 +171,7 @@ export default function GameBoard() {
             )}
 
             <div className='keyboard-section'>
-                <Keyboard onKeyPress={handleKeyPress} disabled={gameOver} />
+                <Keyboard onKeyPress={handleKeyPress} feedback={keyFeedback} disabled={gameOver} />
             </div>
         </div>
     );
@@ -170,8 +179,9 @@ export default function GameBoard() {
 
 function getFeedbackClass(feedback) {
     switch (feedback) {
-        case '🟩': return ' correct';
-        case '🟨': return ' present';
-        default: return ' incorrect';
+        case '🟩': return 'correct';
+        case '🟨': return 'present';
+        case '⬛': return 'incorrect';
+        default: return '';
     }
 }
