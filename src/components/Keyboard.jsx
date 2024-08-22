@@ -14,6 +14,8 @@ const Keyboard = ({ onKeyPress, disabled }) => {
     ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫'],
   ];
 
+  /* new shite*/
+
   return (
     <div className={`keyboard ${disabled ? 'disabled' : ''}`}>
       {keys.map((row, rowIndex) => (

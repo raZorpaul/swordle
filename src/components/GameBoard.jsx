@@ -6,7 +6,7 @@ import Keyboard from "./Keyboard.jsx";
 
 const colms = 5;
 const rows = 6;
-
+/* new shite */
 // Array of possible challenge words
 const wordList = [
     "PANDA", "APPLE", "BEACH", "CLOUD", "DANCE", 

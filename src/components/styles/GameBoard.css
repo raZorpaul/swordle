@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
 }
+/* new */
 .keyboard-section {
     margin-top: 450px;
     margin-left: -85px;
