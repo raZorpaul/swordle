@@ -30,6 +30,45 @@ export default function GameBoard() {
     const [modalMessage, setModalMessage] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [lastGuess, setLastGuess] = useState(null);
+    const [daysSinceLaunch, setDaysSinceLaunch] = useState(0);
+
+    useEffect(() => {
+        const launchDate = new Date('2024-08-23'); // Set this to your actual launch date
+        const today = new Date();
+        const diffTime = Math.abs(today - launchDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        setDaysSinceLaunch(diffDays);
+    }, []);
+
+    const generateShareText = useCallback(() => {
+        console.log("Current row:", currentRow);
+        console.log("Guesses:", guesses);
+
+        const attemptCount = currentRow;
+        let shareText = `Neno ${daysSinceLaunch} ${attemptCount}/6\n\n`;
+
+        for (let i = 0; i < attemptCount; i++) {
+            if (guesses[i] && Array.isArray(guesses[i].feedback)) {
+                const rowFeedback = guesses[i].feedback.map(f => {
+                    switch(f) {
+                        case '🟩':
+                        case 'correct': return '🟩';
+                        case '🟨':
+                        case 'present': return '🟨';
+                        case '⬛':
+                        case 'absent': return '⬛';
+                        default: return '⬛';
+                    }
+                }).join('');
+                shareText += rowFeedback + '\n';
+            } else {
+                console.warn(`No valid guess data for row ${i}`);
+                shareText += '⬛'.repeat(5) + '\n';
+            }
+        }
+
+        return shareText;
+    }, [currentRow, daysSinceLaunch, guesses]);
 
     const checkGuess = useCallback((guess) => {
         const newKeyFeedback = { ...keyFeedback };
@@ -90,7 +129,11 @@ export default function GameBoard() {
     const handleSubmit = useCallback((challengeWord, userGuess) => {
         const feedback = getFeedback(challengeWord, userGuess);
         
-        setGuesses(prevGuesses => [...prevGuesses, { word: userGuess, feedback }]);
+        setGuesses(prevGuesses => {
+            const newGuesses = [...prevGuesses, { word: userGuess, feedback }];
+            console.log("Updated guesses:", newGuesses);
+            return newGuesses;
+        });
         checkGuess(userGuess);
         animateRow(feedback);
     }, [getFeedback, checkGuess, animateRow]);
@@ -172,6 +215,14 @@ export default function GameBoard() {
                     onClose={handleCloseModal} 
                     type={gameOver ? 'gameOver' : 'congrats'}
                     message={modalMessage}
+                    onShare={() => {
+                        const shareText = generateShareText();
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            alert('Results copied to clipboard!');
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                    }}
                 />
             )}
 

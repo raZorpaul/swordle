@@ -124,3 +124,42 @@ button {
   border-color: #3a3a3c;
   background-color: #3a3a3c;
 }
+
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.share-button:hover {
+  background-color: #45a049;
+}
+
+.share-icons {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.share-icon {
+  fill: white;
+}
+
+.share-icon.small {
+  width: 16px;
+  height: 16px;
+  margin-right: -8px;
+}
+
+.share-icon.large {
+  width: 20px;
+  height: 20px;
+}
