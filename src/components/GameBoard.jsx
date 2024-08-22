@@ -65,8 +65,8 @@ export default function GameBoard() {
                         setGameOver(!isRowCorrect);  // Only set game over if not correct
                         setIsModalOpen(true);
                         setModalMessage(isRowCorrect 
-                            ? "Congratulations! You've guessed the word correctly!" 
-                            : `Game Over. The word was ${challengeWord}`
+                            ? "Hongera! Umekisia neno kwa usahihi!" 
+                            : `Mchezo Umekwisha. Neno lilikuwa ${challengeWord}`
                         );
                     }
                 }, animationDuration / 2);

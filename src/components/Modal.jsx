@@ -3,6 +3,22 @@ import './styles/Modal.css';
 import congratsImage from '../assets/congrats.png';
 import gameOverImage from '../assets/gameover.png';
 
+
+const ExampleWord = ({ word, highlightIndex, highlightType }) => {
+    return (
+      <div className="example-word">
+        {word.split('').map((letter, index) => (
+          <div 
+            key={index} 
+            className={`example-letter ${index === highlightIndex ? highlightType : ''}`}
+          >
+            {letter}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
 export default function Modal({ isOpen, onClose, type, message }) {
     if (!isOpen) return null;
 
@@ -19,6 +35,13 @@ export default function Modal({ isOpen, onClose, type, message }) {
                         <li>Kila nadhani lazima iwe neno halali la herufi 5.</li>
                         <li>Rangi ya vigae itabadilika ili kuonyesha jinsi nadhani yako ilivyokuwa karibu na neno.</li>
                     </ul>
+                    <h3 className="examples-title">Mifano</h3>
+                    <ExampleWord word="SAFARI" highlightIndex={0} highlightType="correct" />
+                    <p className="example-explanation">S is in the word and in the correct spot.</p>
+                    <ExampleWord word="NYOTA" highlightIndex={1} highlightType="present" />
+                    <p className="example-explanation">Y kwenye neno lakini katika doa mbaya.</p>
+                    <ExampleWord word="NIAJA" highlightIndex={3} highlightType="absent" />
+                    <p className="example-explanation">J haipo katika neno mahali popote.</p>
                 </div>
             );
             break;
@@ -26,7 +49,7 @@ export default function Modal({ isOpen, onClose, type, message }) {
             image = gameOverImage;
             content = (
                 <>
-                    <h2 className="modal-title">Game Over</h2>
+                    <h2 className="modal-title">Mchezo Umeisha</h2>
                     <p className="modal-message">{message}</p>
                 </>
             );
@@ -35,7 +58,7 @@ export default function Modal({ isOpen, onClose, type, message }) {
             image = congratsImage;
             content = (
                 <>
-                    <h2 className="modal-title">Congratulations!</h2>
+                    <h2 className="modal-title">HONGERA</h2>
                     <p className="modal-message">{message}</p>
                 </>
             );

@@ -19,7 +19,7 @@
     max-width: 500px;
     width: 90%;
     color: white;
-    font-family: Arial, sans-serif; 
+    font-family: Arial, sans-serif;
 }
 
 button {
@@ -80,4 +80,47 @@ button {
     flex-direction: column;
     align-items: center;
     /* justify-content: center; */
+}
+
+.examples-title {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.example-word {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.example-letter {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #3a3a3c;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.example-letter.correct {
+  border-color: #538d4e;
+  background-color: #538d4e;
+}
+
+.example-explanation {
+  font-size: 14px;
+  color: #d7dadc;
+  margin-bottom: 15px;
+}
+
+.example-letter.present {
+  border-color: #b59f3b;
+  background-color: #b59f3b;
+}
+
+.example-letter.absent {
+  border-color: #3a3a3c;
+  background-color: #3a3a3c;
 }
