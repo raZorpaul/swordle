@@ -12,20 +12,23 @@
 }
 
 .modal-content {
-    /* background-color: white; */
     background-color: #121213;
-    /* background-color: yellow; */
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    position: relative;
+    max-width: 80%;
+    width: 300px;
 }
 
 button {
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
+    /* padding: 10px 20px; */
+    background-color: #121213;
     color: white;
     border: none;
+    font-size: 40px;
+    /* border: 1px red solid; */
     border-radius: 5px;
     cursor: pointer;
 }
@@ -33,14 +36,20 @@ button {
 .close-button {
     background: transparent;
     border: none;
-    font-size: 24px;
+    font-size: 44px;
+    /* border: 1px red solid; */
     cursor: pointer;
     position: absolute;
-    top: 10px;
+    top: -20px;
     right: 10px;
+    color: white;
+    /* padding: 5px; */
+    line-height: 1;
 }
 
-
-button:hover {
-    background-color: #0056b3;
+.modal-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    display: block;
 }

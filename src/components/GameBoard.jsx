@@ -62,10 +62,10 @@ export default function GameBoard() {
                     // Check if the game is over after animation
                     const isRowCorrect = feedback.every(f => f === '🟩');
                     if (isRowCorrect || currentRow === rows - 1) {
-                        setGameOver(true);
+                        setGameOver(!isRowCorrect);  // Only set game over if not correct
                         setIsModalOpen(true);
                         setModalMessage(isRowCorrect 
-                            ? "You've guessed the word correctly!" 
+                            ? "Congratulations! You've guessed the word correctly!" 
                             : `Game Over. The word was ${challengeWord}`
                         );
                     }
@@ -167,7 +167,12 @@ export default function GameBoard() {
                 })}
             </div>
             {isModalOpen && (
-                <Modal isOpen={true} onClose={handleCloseModal} message={modalMessage} />
+                <Modal 
+                    isOpen={true} 
+                    onClose={handleCloseModal} 
+                    type={gameOver ? 'gameOver' : 'congrats'}
+                    message={modalMessage}
+                />
             )}
 
             <div className='keyboard-section'>
